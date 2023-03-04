@@ -34,7 +34,7 @@ jobs:
     env:
       INPUT_TOKEN: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
       YOUR_GITHUB_REPOSITORY: duolabmeng6/qoq2
-      UPFILE_LISTSTR: /home/runner/work/qoq1/qoq1/window/hello.exe
+      UPFILE_LISTSTR: ./window/hello.exe
     steps:
       - uses: actions/checkout@v3
       - name: 编译环境设置 Python 3.10
