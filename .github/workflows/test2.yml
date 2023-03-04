@@ -65,8 +65,8 @@ jobs:
         with:
           submodules: recursive
       - name: 读入环境信息
-          run: |
-            echo ${{ format('version {0}', env.version ) }}
+        run: |
+          echo ${{ format('version {0}', env.version ) }}
       - name: 编译 MacOS.app
         run: |
           mkdir -p ./dist
