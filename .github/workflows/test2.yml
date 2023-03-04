@@ -90,7 +90,6 @@ jobs:
     env:
       version: ${{ needs.jobs_v.outputs.version }}
       body: ${{ needs.jobs_v.outputs.body }}
-
       INPUT_TOKEN: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
       YOUR_GITHUB_REPOSITORY: duolabmeng6/qoq2
       UP_FILE_DIR: ./window/*.exe,./macos/*.zip
