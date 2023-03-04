@@ -47,7 +47,6 @@ jobs:
         with:
           python-version: "3.10"
           architecture: "x64"
-          cache: 'pippygithub'
         env:
           INPUT_TOKEN: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
           YOUR_GITHUB_REPOSITORY: duolabmeng6/qoq2
