@@ -56,4 +56,6 @@ jobs:
           export GITHUB_TOKEN=${{ secrets.CUSTOM_GITHUB_TOKEN }}
           export YOUR_GITHUB_REPOSITORY=duolabmeng6/qoq2
           export UPFILE_LISTSTR=./window/hello.exe,
+          
+          
           python github_action_upfile.py
