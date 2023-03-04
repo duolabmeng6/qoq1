@@ -55,6 +55,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           body: "test"
+          tag: "0.1" # 版本号 v0.1.0
           name: "0.1" # 版本号 v0.1.0
           token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
           files: "window/hello.exe"
