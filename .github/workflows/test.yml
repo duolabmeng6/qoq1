@@ -57,6 +57,6 @@ jobs:
           body: "test"
           name: "0.1" # 版本号 v0.1.0
           token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
-          files: "window/hello.exe"ok
+          files: "window/hello.exe"
         env:
           GITHUB_REPOSITORY: duolabmeng6/qoq2
