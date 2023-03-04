@@ -111,9 +111,12 @@ def main():
     YOUR_GITHUB_REPOSITORY = os.environ.get('YOUR_GITHUB_REPOSITORY')
     INPUT_TOKEN = os.environ.get('INPUT_TOKEN')
     UP_FILE_DIR = os.environ.get('UP_FILE_DIR')
-    BODY = os.environ.get('BODY')
+    BODY = os.environ.get('BODY', "")
     print(f"::set-output name=UP_FILE_DIR::{UP_FILE_DIR}")
     print(f"::set-output name=YOUR_GITHUB_REPOSITORY::{YOUR_GITHUB_REPOSITORY}")
+
+    if BODY == None:
+        BODY = ""
 
     UPFILE_LIST = 搜索目录下的文件多参数(UP_FILE_DIR)
     print("搜索到的文件", UPFILE_LIST)
