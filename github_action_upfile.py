@@ -72,22 +72,17 @@ def 创建版本并上传构件(token, project_name, 上传文件列表=[], 标�
     )
     # 循环上传文件列表
     for 上传文件 in 上传文件列表:
-        print("上传文件", 上传文件)
-
-        print(f"::set-output name=a::{上传文件}")
         if 上传文件 == "":
             continue
         if not os.path.exists(上传文件):
             print("文件不存在", 上传文件)
             continue
-
         文件名 = os.path.basename(上传文件)
-        print("文件名", 文件名)
 
         release.upload_asset(
             content_type='application/octet-stream',
             name=文件名,
-            path=文件名
+            path=上传文件
         )
 
     return 新版本号
