@@ -1,4 +1,4 @@
-name: 发布软件2
+name: 发布软件
 
 on:
   push: # 代码推送到main分支自动触发工作流
@@ -65,14 +65,14 @@ jobs:
       - uses: actions/checkout@v3
         with:
           submodules: recursive
-     - name: 读入环境信息
-        run: |
-          echo ${{ format('version {0}', env.version ) }}
+      - name: 读入环境信息
+          run: |
+            echo ${{ format('version {0}', env.version ) }}
       - name: 编译 MacOS.app
         run: |
-            mkdir -p ./dist
-            mkdir -p ./dist/qoq.app/Contents/MacOS
-            echo "hello world" > ./dist/qoq.app/Contents/MacOS/qoq
+          mkdir -p ./dist
+          mkdir -p ./dist/qoq.app/Contents/MacOS
+          echo "hello world" > ./dist/qoq.app/Contents/MacOS/qoq
       - name: 创建压缩包
         run: |
           cd ./dist
