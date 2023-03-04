@@ -1,0 +1,119 @@
+name: 发布软件
+
+on:
+  push: # 代码推送到main分支自动触发工作流
+    branches:
+      - main
+  workflow_dispatch: # 手动触发
+
+permissions: write-all # 给所有工作写权限
+
+jobs:
+  jobs_v:
+    name: 构建版本号和变更信息
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.create_version.outputs.tag_name }} # 版本号
+      body: ${{ steps.create_version.outputs.body }} # 版本变更内容
+    steps:
+      - uses: release-drafter/release-drafter@v5
+        id: create_version
+        with:
+          config-name: release-drafter.yml # 配置文件在 .github/release-drafter.yml
+          disable-autolabeler: true # 禁止自动标签
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: 查看变量
+        run: |
+          echo ${{ format('version={0}', steps.create_version.outputs.tag_name ) }} 
+
+  jobs_window:
+    needs: jobs_v # 等待 jobs_v 任务完成才执行
+    name: 构建window软件
+    timeout-minutes: 30
+    runs-on: windows-2022
+    env:
+      version: ${{ needs.jobs_v.outputs.version }}
+      body: ${{ needs.jobs_v.outputs.body }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - name: 读入环境信息
+        run: |
+          echo ${{ format('version {0}', env.version ) }} # 版本号
+
+      - name: 编译exe
+        run: |
+          echo "hello world" > ./dist/hello.exe
+
+      - name: 上传产物
+        uses: actions/upload-artifact@v3
+        with:
+          name: window
+          path: ./dist/*.exe
+
+  jobs_macos:
+    needs: jobs_v
+    name: 构建macos软件
+    if: false
+    runs-on: macos-12
+    env:
+      version: ${{ needs.jobs_v.outputs.version }}
+      body: ${{ needs.jobs_v.outputs.body }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+     - name: 读入环境信息
+        run: |
+          echo ${{ format('version {0}', env.version ) }}
+      - name: 编译 MacOS.app
+        run: |
+            mkdir -p ./dist
+            mkdir -p ./dist/qoq.app/Contents/MacOS
+            echo "hello world" > ./dist/qoq.app/Contents/MacOS/qoq
+      - name: 创建压缩包
+        run: |
+          cd ./dist
+          zip -r ./qoq_MacOS.zip ./qoq.app
+      - name: 上传产物
+        uses: actions/upload-artifact@v3
+        with:
+          name: macos
+          path: ./dist/*.zip
+
+
+  jobs4:
+    needs: [ jobs_v,jobs_window,jobs_macos ]
+    name: 发布版本
+    runs-on: ubuntu-latest
+    env:
+      version: ${{ needs.jobs_v.outputs.version }}
+      body: ${{ needs.jobs_v.outputs.body }}
+
+      INPUT_TOKEN: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
+      YOUR_GITHUB_REPOSITORY: duolabmeng6/qoq2
+      UP_FILE_DIR: ./window/*.exe,./macos/*.zip
+    steps:
+      - uses: actions/checkout@v3
+      - name: 编译环境设置 Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+          architecture: "x64"
+      - name: 下载依赖文件
+        run: |
+          pip install PyGithub
+      - name: 下载产物
+        id: download
+        uses: actions/download-artifact@v3
+        with:
+          path: ./
+      - name: 读入环境信息
+        run: |
+          echo ${{steps.download.outputs.download-path}}
+          ls -R
+      - name: 上传文件
+        run: |
+          python github_action_upfile.py

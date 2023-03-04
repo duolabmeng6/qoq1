@@ -111,13 +111,14 @@ def main():
     YOUR_GITHUB_REPOSITORY = os.environ.get('YOUR_GITHUB_REPOSITORY')
     INPUT_TOKEN = os.environ.get('INPUT_TOKEN')
     UP_FILE_DIR = os.environ.get('UP_FILE_DIR')
+    BODY = os.environ.get('BODY')
     print(f"::set-output name=UP_FILE_DIR::{UP_FILE_DIR}")
     print(f"::set-output name=YOUR_GITHUB_REPOSITORY::{YOUR_GITHUB_REPOSITORY}")
 
     UPFILE_LIST = 搜索目录下的文件多参数(UP_FILE_DIR)
     print("搜索到的文件", UPFILE_LIST)
 
-    新版本号 = 创建版本并上传构件(INPUT_TOKEN, YOUR_GITHUB_REPOSITORY, UPFILE_LIST, "", "更新内容")
+    新版本号 = 创建版本并上传构件(INPUT_TOKEN, YOUR_GITHUB_REPOSITORY, UPFILE_LIST, "", BODY)
     print(f"::set-output name=NewVersion::{新版本号}")
 
 
