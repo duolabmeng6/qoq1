@@ -70,6 +70,8 @@ def 创建版本并上传构件(token, project_name, 上传文件列表=[], 标�
         draft=False,
         prerelease=False
     )
+    print("上传文件列表", 上传文件列表)
+
     # 循环上传文件列表
     for 上传文件 in 上传文件列表:
         print("上传文件", 上传文件)
@@ -106,7 +108,8 @@ def main():
         UPFILE_LIST = UPFILE_LISTSTR.split(',')
     except:
         UPFILE_LIST = []
-
+    print("UPFILE_LIST", UPFILE_LIST)
+    
     新版本号 = 创建版本并上传构件(INPUT_TOKEN, YOUR_GITHUB_REPOSITORY, UPFILE_LIST, "", "更新内容")
     print(f"::set-output name=NewVersion::{新版本号}")
 
