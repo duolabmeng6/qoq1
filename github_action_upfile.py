@@ -72,6 +72,12 @@ def 创建版本并上传构件(token, project_name, 上传文件列表=[], 标�
     )
     # 循环上传文件列表
     for 上传文件 in 上传文件列表:
+        print("上传文件", 上传文件)
+        print("上传文件 exists", os.path.exists(上传文件))
+        # 获取绝对路径
+        上传文件 = os.path.abspath(上传文件)
+        print("上传文件", 上传文件)
+
         if 上传文件 == "":
             continue
         if not os.path.exists(上传文件):
@@ -95,11 +101,11 @@ def main():
     print(f"::set-output name=UPFILE_LISTSTR::{UPFILE_LISTSTR}")
     print(f"::set-output name=YOUR_GITHUB_REPOSITORY::{YOUR_GITHUB_REPOSITORY}")
 
+
     try:
         UPFILE_LIST = UPFILE_LISTSTR.split(',')
     except:
         UPFILE_LIST = []
-
 
     新版本号 = 创建版本并上传构件(INPUT_TOKEN, YOUR_GITHUB_REPOSITORY, UPFILE_LIST, "", "更新内容")
     print(f"::set-output name=NewVersion::{新版本号}")
