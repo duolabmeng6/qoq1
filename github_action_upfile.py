@@ -94,8 +94,8 @@ def main():
     except:
         UPFILE_LIST = []
 
-    #新版本号 = 创建版本并上传构件(INPUT_TOKEN, GITHUB_REPOSITORY, UPFILE_LIST, "", "更新内容")
-    #print(f"::set-output name=NewVersion::{新版本号}")
+    新版本号 = 创建版本并上传构件(INPUT_TOKEN, GITHUB_REPOSITORY, UPFILE_LIST, "", "更新内容")
+    print(f"::set-output name=NewVersion::{新版本号}")
 
 
 if __name__ == "__main__":
