@@ -36,15 +36,6 @@ jobs:
       YOUR_GITHUB_REPOSITORY: duolabmeng6/qoq2
       UPFILE_LISTSTR: /home/runner/work/qoq1/qoq1/window/hello.exe
     steps:
-      - name: 下载产物
-        id: download
-        uses: actions/download-artifact@v3
-        with:
-          path: ./
-      - name: 读入环境信息
-        run: |
-          echo ${{steps.download.outputs.download-path}}
-          ls -R
       - uses: actions/checkout@v3
       - name: 编译环境设置 Python 3.10
         uses: actions/setup-python@v4
@@ -54,6 +45,15 @@ jobs:
       - name: 下载依赖文件
         run: |
           pip install PyGithub
+      - name: 下载产物
+        id: download
+        uses: actions/download-artifact@v3
+        with:
+          path: ./
+      - name: 读入环境信息
+        run: |
+          echo ${{steps.download.outputs.download-path}}
+          ls -R
       - name: 上传文件
         run: |
           python github_action_upfile.py
