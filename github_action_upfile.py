@@ -3,31 +3,36 @@ import os
 from github import Github
 
 
-def 版本号格式加一(版本号):
-    版本号 = 版本号.split('.')
-    版本号[-1] = str(int(版本号[-1]) + 1)
-    版本号 = '.'.join(版本号)
-    return 版本号
+def 版本号递进(version_str):
+    # 版本号格式为 x.x.x 满十进一
+    version = version_str.split('.')
+    if len(version) == 2:
+        version.append('0')
+
+    version = list(map(int, version))
+
+    version[2] += 1
+    if version[2] >= 10:
+        version[2] = 0
+        version[1] += 1
+        if version[1] >= 10:
+            version[1] = 0
+            version[0] += 1
+
+    return '.'.join(map(str, version))
 
 
 def 版本号从大小写排序(tags):
-    # 删除非数字的版本号
-    tags = [tag for tag in tags if tag.replace('.', '').isdigit()]
-    tags_dict = []
-    for tag in tags:
-        # 获取数值
-        tag_value = int("".join(tag.split('.')))
-        tags_dict.append({
-            "tag": tag,
-            'tagint': tag_value
-        })
-    tags_dict.sort(key=lambda student: student['tagint'])
-    tags_dict.reverse()
-    # 重新组装
-    tags = []
-    for tag in tags_dict:
-        tags.append(tag['tag'])
-    return tags
+    # 将版本号字符串转换为列表
+    arr = [v.split('.') for v in tags]
+    # 将版本号列表转换为数字列表
+    arr = [[int(n) for n in v] for v in arr]
+    # 使用 Python 内置排序函数，按照数字列表的顺序进行排序
+    arr = sorted(arr)
+    # 将数字列表转换回版本号列表
+    arr = ['.'.join([str(n) for n in v]) for v in arr]
+    arr.reverse()
+    return arr
 
 
 def 创建版本并上传构件(token, project_name, 上传文件列表=[], 标题="", 发布内容=""):
@@ -53,11 +58,12 @@ def 创建版本并上传构件(token, project_name, 上传文件列表=[], 标�
         if k == 5:
             break  # 取前5个标签
     print("原来的 tags", tags)
-
     # 版本号排序
     tags = 版本号从大小写排序(tags)
+    print("从大小写排序 tags", tags)
+
     # print("版本号排序:", tags)
-    新版本号 = 版本号格式加一(tags[0])
+    新版本号 = 版本号递进(tags[0])
     # print("新版本号:", 新版本号)
     print("创建新版本", 新版本号)
     sha = repo.get_commits()[0].sha
@@ -94,8 +100,6 @@ def 创建版本并上传构件(token, project_name, 上传文件列表=[], 标�
 
 
 import glob
-
-
 def 搜索目录下的文件多参数(搜索目录):
     # 搜索目录 window/*.exe,macos/*.zip
     search_directories = 搜索目录.split(',')
@@ -115,6 +119,7 @@ def main():
     print(f"::set-output name=UP_FILE_DIR::{UP_FILE_DIR}")
     print(f"::set-output name=YOUR_GITHUB_REPOSITORY::{YOUR_GITHUB_REPOSITORY}")
 
+
     if BODY == None:
         BODY = ""
 
@@ -127,5 +132,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    # fileList = 搜索目录下的文件多参数("./window/*.exe,./macos/*.zip")
-    # print(fileList)
