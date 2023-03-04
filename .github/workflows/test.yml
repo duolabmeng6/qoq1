@@ -50,7 +50,7 @@ jobs:
           cache: 'pippygithub'
         env:
           INPUT_TOKEN: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
-          YOUR_GITHUB_REPOSITORY: uolabmeng6/qoq2
+          YOUR_GITHUB_REPOSITORY: duolabmeng6/qoq2
           UPFILE_LISTsTR: "./window/hello.exe"
       - name: 下载依赖文件
         run: |
