@@ -89,17 +89,13 @@ def main():
     print(f"::set-output name=UPFILE_LISTSTR::{UPFILE_LISTSTR}")
     print(f"::set-output name=YOUR_GITHUB_REPOSITORY::{YOUR_GITHUB_REPOSITORY}")
 
-    GITHUB_REPOSITORY = "duolabmeng6/qoq2"
-    INPUT_TOKEN = "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"
-    UPFILE_LISTSTR = "C:\pyefun\QtEsayDesigner\qoq_soft\hello.exe"
-
     try:
         UPFILE_LIST = UPFILE_LISTSTR.split(',')
     except:
         UPFILE_LIST = []
 
-    新版本号 = 创建版本并上传构件(INPUT_TOKEN, GITHUB_REPOSITORY, UPFILE_LIST, "", "更新内容")
-    print(f"::set-output name=NewVersion::{新版本号}")
+    #新版本号 = 创建版本并上传构件(INPUT_TOKEN, GITHUB_REPOSITORY, UPFILE_LIST, "", "更新内容")
+    #print(f"::set-output name=NewVersion::{新版本号}")
 
 
 if __name__ == "__main__":
