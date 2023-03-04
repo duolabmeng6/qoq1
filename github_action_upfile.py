@@ -86,12 +86,12 @@ def main():
     YOUR_GITHUB_REPOSITORY = os.environ.get('YOUR_GITHUB_REPOSITORY')
     INPUT_TOKEN = os.environ.get('INPUT_TOKEN')
     UPFILE_LISTSTR = os.environ.get('UPFILE_LIST')
-    UPFILE_LIST = UPFILE_LISTSTR.split(',')
-
-    新版本号 = 创建版本并上传构件(INPUT_TOKEN, GITHUB_REPOSITORY, UPFILE_LIST, "", "更新内容")
-    print(f"::set-output name=NewVersion::{新版本号}")
     print(f"::set-output name=UPFILE_LISTSTR::{UPFILE_LISTSTR}")
     print(f"::set-output name=YOUR_GITHUB_REPOSITORY::{YOUR_GITHUB_REPOSITORY}")
+
+    UPFILE_LIST = UPFILE_LISTSTR.split(',')
+    新版本号 = 创建版本并上传构件(INPUT_TOKEN, GITHUB_REPOSITORY, UPFILE_LIST, "", "更新内容")
+    print(f"::set-output name=NewVersion::{新版本号}")
 
 
 if __name__ == "__main__":
