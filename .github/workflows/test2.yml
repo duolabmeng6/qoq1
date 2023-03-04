@@ -1,4 +1,4 @@
-name: 发布软件
+name: 发布软件2
 
 on:
   push:
@@ -55,7 +55,6 @@ jobs:
   jobs_macos:
     needs: jobs_v
     name: 构建macos软件
-    if: false
     runs-on: macos-12
     env:
       version: ${{ needs.jobs_v.outputs.version }}
