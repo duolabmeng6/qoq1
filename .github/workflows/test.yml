@@ -1,36 +1,53 @@
-# This is a basic workflow to help you get started with Actions
+name: 发布软件
 
-name: CI
-
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  push: # 代码推送到main分支自动触发工作流
+    branches:
+      - main
+  workflow_dispatch: # 手动触发
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+permissions: write-all # 给所有工作写权限
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  jobs_window:
+    name: 构建window软件
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
-
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
+        with:
+          submodules: recursive
+      - name: 读入环境信息
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          # 模拟写出一个 exe
+            echo "hello world" > ./dist/hello.exe
+      - name: 上传产物
+        uses: actions/upload-artifact@v3
+        with:
+          name: window
+          path: ./dist/*.exe
+  jobs4:
+    needs: [ jobs_window ]
+    name: 发布版本
+    runs-on: ubuntu-latest
+    steps:
+      - name: 下载产物
+        id: download
+        uses: actions/download-artifact@v3
+        with:
+          path: ./
+      - name: 读入环境信息
+        run: |
+          echo ${{steps.download.outputs.download-path}}
+          ls -R
+
+      - name: 发布文件
+        uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          allowUpdates: true # 覆盖文件
+          #draft: true # 草稿 自己可见 版本号会保持一样 默认是自动发布 latest
+          #prerelease: true # 预发布 别人可以看到 版本号会继续加
+          tag: ${{ env.version }} # 版本号 v0.1.0
+          body: ${{ env.body }} # 输出的内容
+          artifacts: "window/*.exe,macos/*.zip"
