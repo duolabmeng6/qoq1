@@ -45,7 +45,8 @@ jobs:
           echo ${{ format('version {0}', env.version ) }}
       - name: 编译exe
         run: |
-          echo "hello world" > ./dist/hello.exe
+          mkdir -p ./dist
+          echo "hello world" > ./dist/qoq.exe
       - name: 上传产物
         uses: actions/upload-artifact@v3
         with:
