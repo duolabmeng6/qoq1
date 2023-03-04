@@ -20,6 +20,7 @@ jobs:
       - name: 读入环境信息
         run: |
           # 模拟写出一个 exe
+            mkdir -p ./dist
             echo "hello world" > ./dist/hello.exe
       - name: 上传产物
         uses: actions/upload-artifact@v3
