@@ -74,12 +74,9 @@ def 创建版本并上传构件(token, project_name, 上传文件列表=[], 标�
 
     # 循环上传文件列表
     for 上传文件 in 上传文件列表:
-        print("上传文件", 上传文件)
-        print("上传文件 exists", os.path.exists(上传文件))
-        # 获取绝对路径
+        print("上传文件", 上传文件, "文件是否存在", os.path.exists(上传文件))
         上传文件 = os.path.abspath(上传文件)
-        print("上传文件", 上传文件)
-
+        print("上传文件 绝对路径", 上传文件, os.path.exists(上传文件))
         if 上传文件 == "":
             continue
         if not os.path.exists(上传文件):
@@ -96,21 +93,29 @@ def 创建版本并上传构件(token, project_name, 上传文件列表=[], 标�
     return 新版本号
 
 
+import glob
+
+
+def 搜索目录下的文件多参数(搜索目录):
+    # 搜索目录 window/*.exe,macos/*.zip
+    search_directories = 搜索目录.split(',')
+    print("搜索目录", search_directories)
+    matched_files = []
+    for directory in search_directories:
+        files = glob.glob(directory)
+        matched_files.extend(files)
+    return matched_files
+
+
 def main():
     YOUR_GITHUB_REPOSITORY = os.environ.get('YOUR_GITHUB_REPOSITORY')
     INPUT_TOKEN = os.environ.get('INPUT_TOKEN')
-    UPFILE_LISTSTR = os.environ.get('UPFILE_LISTSTR')
-    print(f"::set-output name=UPFILE_LISTSTR::{UPFILE_LISTSTR}")
+    UP_FILE_DIR = os.environ.get('UP_FILE_DIR')
+    print(f"::set-output name=UP_FILE_DIR::{UP_FILE_DIR}")
     print(f"::set-output name=YOUR_GITHUB_REPOSITORY::{YOUR_GITHUB_REPOSITORY}")
 
-
-
-    print("UPFILE_LISTSTR", UPFILE_LISTSTR)
-    try:
-        UPFILE_LIST = UPFILE_LISTSTR.split(',')
-    except:
-        UPFILE_LIST = []
-    print("UPFILE_LIST", UPFILE_LIST)
+    UPFILE_LIST = 搜索目录下的文件多参数(UP_FILE_DIR)
+    print("搜索到的文件", UPFILE_LIST)
 
     新版本号 = 创建版本并上传构件(INPUT_TOKEN, YOUR_GITHUB_REPOSITORY, UPFILE_LIST, "", "更新内容")
     print(f"::set-output name=NewVersion::{新版本号}")
@@ -118,3 +123,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+    # fileList = 搜索目录下的文件多参数("./window/*.exe,./macos/*.zip")
+    # print(fileList)
