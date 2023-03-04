@@ -34,7 +34,7 @@ jobs:
     env:
       INPUT_TOKEN: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
       YOUR_GITHUB_REPOSITORY: duolabmeng6/qoq2
-      UPFILE_LISTSTR: ./window/hello.exe,
+      UPFILE_LISTSTR: /home/runner/work/qoq1/qoq1/window/hello.exe
     steps:
       - name: 下载产物
         id: download
@@ -54,6 +54,6 @@ jobs:
       - name: 下载依赖文件
         run: |
           pip install PyGithub
-      - name: 编译exe
+      - name: 上传文件
         run: |
           python github_action_upfile.py
