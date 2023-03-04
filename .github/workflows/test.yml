@@ -47,16 +47,13 @@ jobs:
         with:
           python-version: "3.10"
           architecture: "x64"
-        env:
-          INPUT_TOKEN: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
-          YOUR_GITHUB_REPOSITORY: duolabmeng6/qoq2
-          UPFILE_LISTsTR: ./window/hello.exe,
       - name: 下载依赖文件
         run: |
           pip install PyGithub
       - name: 编译exe
         run: |
-          # 读取环境变量
-          echo ${{ format('INPUT_TOKEN {0}', env.INPUT_TOKEN ) }} # 版本号
-          echo ${{ format('UPFILE_LISTsTR {0}', env.UPFILE_LISTsTR ) }} # 版本变更内容
+          # 设置环境变量
+          export GITHUB_TOKEN=${{ secrets.CUSTOM_GITHUB_TOKEN }}
+          export YOUR_GITHUB_REPOSITORY=duolabmeng6/qoq2
+          export UPFILE_LISTSTR=./window/hello.exe,
           python github_action_upfile.py
