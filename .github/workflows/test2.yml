@@ -40,6 +40,20 @@ jobs:
       - uses: actions/checkout@v3
         with:
           submodules: recursive
+
+    - name: Check for "发布"
+      run: |
+        # 获取最新的提交消息
+        latest_commit_message=$(git log -1 --pretty=%B)
+
+        # 检查提交消息是否包含 "发布"
+        if [[ $latest_commit_message == *"发布"* ]]; then
+          echo "Commit message contains '发布'. Continue with the workflow."
+        else
+          echo "Commit message does not contain '发布'. Workflow will be stopped."
+          exit 1  # 停止工作流程
+        fi
+
       - name: 读入环境信息
         run: |
           echo ${{ format('version {0}', env.version ) }}
