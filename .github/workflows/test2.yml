@@ -27,7 +27,6 @@ jobs:
       - name: 查看变量
         run: |
           echo ${{ format('version={0}', steps.create_version.outputs.tag_name ) }} 
-
       - uses: actions/checkout@v3
         with:
           submodules: recursive
