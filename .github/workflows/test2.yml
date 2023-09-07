@@ -49,8 +49,7 @@ jobs:
         uses: crazy-max/ghaction-upx@v2
         with:
           install-only: true
-      -
-        name: UPX version
+      - name: UPX version
         run: upx --version
 
       - name: 编译exe
