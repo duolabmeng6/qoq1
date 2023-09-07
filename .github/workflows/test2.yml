@@ -44,14 +44,6 @@ jobs:
         run: |
           echo ${{ format('version {0}', env.version ) }}
 
--
-      - name: Install UPX
-        uses: crazy-max/ghaction-upx@v2
-        with:
-          install-only: true
-      - name: UPX version
-        run: upx --version
-
       - name: 编译exe
         run: |
           mkdir -p ./dist
