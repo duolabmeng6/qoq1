@@ -1,9 +1,9 @@
 name: 发布软件2
 
 on:
-  # push:
-  #   branches:
-  #     - main
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
@@ -43,6 +43,22 @@ jobs:
       - name: 读入环境信息
         run: |
           echo ${{ format('version {0}', env.version ) }}
+
+      - name: Install UPX
+        run: |
+          # 下载 UPX 的 Windows 二进制文件
+          Invoke-WebRequest -Uri https://github.com/upx/upx/releases/download/v3.96/upx-3.96-win64.zip -OutFile upx.zip
+
+          # 解压 UPX
+          Expand-Archive -Path upx.zip -DestinationPath C:\upx
+
+          # 将 UPX 添加到系统 PATH 中
+          [System.Environment]::SetEnvironmentVariable("PATH", "$env:PATH;C:\upx", [System.EnvironmentVariableTarget]::Machine)
+
+          # 验证 UPX 安装
+          upx --version
+        shell: PowerShell
+
       - name: 编译exe
         run: |
           mkdir -p ./dist
