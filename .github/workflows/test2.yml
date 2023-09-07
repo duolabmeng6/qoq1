@@ -62,6 +62,7 @@ jobs:
           path: ./dist/*.exe
 
   jobs_macos:
+    if: false
     needs: jobs_v
     name: 构建macos软件
     runs-on: macos-12
