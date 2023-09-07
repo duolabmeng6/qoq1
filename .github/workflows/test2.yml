@@ -27,6 +27,10 @@ jobs:
       - name: 查看变量
         run: |
           echo ${{ format('version={0}', steps.create_version.outputs.tag_name ) }} 
+
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
       - name: Check for "发布"
         run: |
           # 获取最新的提交消息
@@ -39,7 +43,7 @@ jobs:
             echo "Commit message does not contain '发布'. Workflow will be stopped."
             exit 1  # 停止工作流程
           fi
-          
+
   jobs_window:
     needs: jobs_v
     name: 构建window软件
